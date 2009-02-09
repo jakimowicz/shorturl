@@ -16,23 +16,15 @@ Here is the list of the services supported by ShortURL:
 * http://rubyurl.com
 * http://tinyurl.com
 * http://shorl.com
-* http://snipurl.com
 * http://metamark.net
-* http://makeashorterlink.com
-* http://skinnylink.com
-* http://linktrim.com
 * http://shorterlink.com
-* http://minilink.org
 * http://ln-s.net
 * http://fyad.org
 * http://d62.net
 * http://shiturl.com
-* http://littlink.com
-* http://clipurl.com
 * http://shortify.com
-* http://0rz.net
 * http://moourl.com
-* http://urltea.com
+* http://is.gd
 
 == Usage: 
 call-seq:
@@ -44,24 +36,14 @@ The second parameter represents the service you want to use.  These are:
 * <tt>:rubyurl</tt>
 * <tt>:tinyurl</tt>
 * <tt>:shorl</tt>
-* <tt>:snipurl</tt>
 * <tt>:metamark</tt>
-* <tt>:makeashorterlink</tt>
-* <tt>:skinnylink</tt>
-* <tt>:linktrim</tt>
 * <tt>:shorterlink</tt>
-* <tt>:minlink</tt>
 * <tt>:lns</tt>
 * <tt>:fyad</tt>
 * <tt>:d62</tt>
 * <tt>:shiturl</tt>
-* <tt>:littlink</tt>
-* <tt>:clipurl</tt>
 * <tt>:shortify</tt>
-* <tt>:orz</tt>
-* <tt>:moourl</tt>
-* <tt>:urltea</tt>
-
+* <tt>:isgd</tt>
 
 You can use <tt>ShortURL.valid_services</tt> to obtain a
 list of the valid services (in case I forget to update the
