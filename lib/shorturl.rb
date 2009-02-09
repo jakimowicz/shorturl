@@ -175,10 +175,11 @@ class ShortURL
   #   ShortURL.shorten("http://mypage.com") => Uses RubyURL
   #   ShortURL.shorten("http://mypage.com", :tinyurl)
   def self.shorten(url, service = :rubyurl)
-    if valid_services.include? service
-      @@services[service].call(url)
-    else
-      raise InvalidService
-    end
+    service_or_raise(service).call(url)
+  end
+
+  # Search for given service and return it or raise InvalidService
+  def self.service_or_raise(service)
+    @@services[service] || raise InvalidService
   end
 end
