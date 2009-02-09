@@ -41,10 +41,16 @@ class Service
                  when :post: http.post(@action, "#{@field}=#{url}")
                  when :get: http.get("#{@action}?#{@field}=#{CGI.escape(url)}")
                  end
-      if response.code == @code.to_s
-        @block.call(response.read_body)
-      end
+      handle response
     }
+  end
+  
+  # Parse response using @block.
+  # This functions was written to be redefined in some services
+  def handle(response)
+    if response.code == @code.to_s
+      @block.call(response.read_body)
+    end
   end
 end
 
@@ -62,22 +68,13 @@ class ShortURL
     },
     
     :tinyurl => Service.new("tinyurl.com") { |s|
-      s.action = "/create.php"
-      s.block = lambda { |body| URI.extract(body).grep(/tinyurl/)[-1] }
+      s.action = "/api-create.php"
+      s.block = lambda { |body| URI.extract(body).grep(/tinyurl/)[0] }
     },
     
     :shorl => Service.new("shorl.com") { |s|
       s.action = "/create.php"
       s.block = lambda { |body| URI.extract(body)[2] }
-    },
-
-    :snipurl => Service.new("snipurl.com") { |s|
-      s.action = "/index.php"
-      s.field = "link"
-      s.block = lambda { |body|
-        line = body.split("\n").grep(/txt/)[0]
-        short_url = URI.extract(line)[1][0..-2] # Remove trailing '
-      }
     },
 
     :metamark => Service.new("metamark.net") { |s|
@@ -86,27 +83,12 @@ class ShortURL
       s.block = lambda { |body| URI.extract(body).grep(/xrl.us/)[0] }
     },
 
-    :makeashorterlink => Service.new("makeashorterlink.com") { |s|
-      s.action = "/index.php"
-      s.block = lambda { |body| URI.extract(body).grep(/makeashorterlink/)[0] }
-    },
-
-    :skinnylink => Service.new("skinnylink.com") { |s|
-      s.block = lambda { |body| URI.extract(body).grep(/skinnylink/)[0] }
-    },
-
-    :linktrim => Service.new("linktrim.com") { |s|
-      s.method = :get
-      s.action = "/lt/generate"
-      s.block = lambda { |body| URI.extract(body).grep(/\/linktrim/)[1] }
-    },
-
     :shorterlink => Service.new("shorterlink.com") { |s|
       s.method = :get
       s.action = "/add_url.html"
       s.block = lambda { |body| URI.extract(body).grep(/shorterlink/)[0] }
     },
-
+    
     :minilink => Service.new("minilink.org") { |s|
       s.method = :get
       s.block = lambda { |body| URI.extract(body)[-1] }
@@ -134,38 +116,23 @@ class ShortURL
       s.block = lambda { |body| URI.extract(body).grep(/shiturl/)[0] }
     },
 
-    :littlink => Service.new("littlink.com") { |s|
-      s.block = lambda { |body| URI.extract(body).grep(/littlink/)[0] }
-    },
-
-    :clipurl => Service.new("clipurl.com") { |s|
-      s.action = "/create.asp"
-      s.block = lambda { |body| URI.extract(body).grep(/clipurl/)[0] }
-    },
-
-    :shortify => Service.new("shortify.com") { |s|
+    :shortify => Service.new("shortify.wikinote.com") { |s|
       s.method = :get
-      s.action = "/shorten.php"
-      s.block = lambda { |body| URI.extract(body).grep(/shortify/)[0] }
+      s.action = "/sshorten.php"
+      s.field = "url"
+      s.block = lambda { |body| URI.extract(body)[0] }
     },
 
-    :orz => Service.new("0rz.net") { |s|
-      s.action = "/create.php"
-      s.block = lambda { |body| URI.extract(body).grep(/0rz/)[0] }
-    },
-    
     :moourl => Service.new("moourl.com") { |s|      
       s.code = 302
       s.action = "/create/"
       s.method = :get      
       s.field = "source"
-      s.block = lambda { |body| body.gsub('Location/woot/?moo=','http://moourl.com/') } 
-    },
-    
-    :urltea => Service.new("urltea.com") { |s| 
-      s.method = :get
-      s.action = "/create/"
-      s.block = lambda { |body| URI.extract(body).grep(/urltea/)[6] }       
+      
+      # Redefine handle function to get redirection code (moourl use http header redirection)
+      def s.handle(response)
+        response['Location'].gsub('/woot/?moo=','http://moourl.com/')
+      end
     },
     
     :isgd => Service.new("is.gd") {|s|
