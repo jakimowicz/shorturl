@@ -180,6 +180,6 @@ class ShortURL
 
   # Search for given service and return it or raise InvalidService
   def self.service_or_raise(service)
-    @@services[service] || raise InvalidService
+    @@services[service] || raise(InvalidService)
   end
 end
