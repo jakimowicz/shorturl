@@ -25,6 +25,7 @@ class Service
     @method = :post
     @action = "/"
     @field = "url"
+    @cache = {}
     @block = lambda { |body| }
 
     if block_given?
@@ -35,7 +36,7 @@ class Service
   # Now that our service is set up, call it with all the parameters to
   # (hopefully) return only the shortened URL.
   def call(url)
-    Net::HTTP.start(@hostname, @port) { |http|
+    @cache[url] ||= Net::HTTP.start(@hostname, @port) { |http|
       response = case @method
                  when :post: http.post(@action, "#{@field}=#{url}")
                  when :get: http.get("#{@action}?#{@field}=#{CGI.escape(url)}")
