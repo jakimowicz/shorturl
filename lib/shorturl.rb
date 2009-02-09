@@ -162,21 +162,13 @@ class ShortURL
   # * <tt>:rubyurl</tt>
   # * <tt>:tinyurl</tt>
   # * <tt>:shorl</tt>
-  # * <tt>:snipurl</tt>
   # * <tt>:metamark</tt>
-  # * <tt>:makeashorterlink</tt>
-  # * <tt>:skinnylink</tt>
-  # * <tt>:linktrim</tt>
   # * <tt>:shorterlink</tt>
-  # * <tt>:minlink</tt>
   # * <tt>:lns</tt>
   # * <tt>:fyad</tt>
   # * <tt>:d62</tt>
   # * <tt>:shiturl</tt>
-  # * <tt>:littlink</tt>
-  # * <tt>:clipurl</tt>
   # * <tt>:shortify</tt>
-  # * <tt>:orz</tt>
   # * <tt>:isgd</tt>
   #
   # call-seq:
